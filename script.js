@@ -60,10 +60,10 @@ const EXPERIENCE = [
  {en:{role:'Accounting & Financial Reporting',company:'Accounting role · Qatif',date:'Jun 2021 – Jun 2023',details:'Supported reconciliations, financial reporting, budgeting and VAT calculations.'},ar:{role:'المحاسبة والتقارير المالية',company:'عمل محاسبي · القطيف',date:'يونيو 2021 – يونيو 2023',details:'المساهمة في التسويات والتقارير المالية والميزانيات وحسابات ضريبة القيمة المضافة.'}}
 ];
 const CERTIFICATES = [
- {issuer:'Google',name:'Google IT Support',date:{en:'Apr 2026',ar:'أبريل 2026'},logo:'G'},
- {issuer:'IBM',name:'Data Fundamentals',date:{en:'Oct 2024',ar:'أكتوبر 2024'},logo:'IBM'},
- {issuer:'IBM',name:'Project Based Learning Programme in Data Analysis',date:{en:'Oct 2024',ar:'أكتوبر 2024'},logo:'IBM'},
- {issuer:'IBM',name:'Project Management Fundamentals',date:{en:'Nov 2024',ar:'نوفمبر 2024'},logo:'IBM'}
+ {issuer:'Google / Coursera',name:'Google IT Support',date:{en:'12 Apr 2026',ar:'12 أبريل 2026'},image:'assets/certificates/google-it-support.webp',pdf:'assets/certificates/google-it-support.pdf',verify:'https://coursera.org/verify/professional-cert/I3TY07S9J6HZ'},
+ {issuer:'IBM SkillsBuild',name:'Data Fundamentals',date:{en:'19 Nov 2024',ar:'19 نوفمبر 2024'},image:'assets/certificates/ibm-data-fundamentals.webp',pdf:'assets/certificates/ibm-data-fundamentals.pdf',verify:'https://www.credly.com/go/tx56Z4hv',badge:'assets/certificates/ibm-data-fundamentals-badge.png'},
+ {issuer:'IBM SkillsBuild',name:'Project Based Learning Programme in Data Analysis',date:{en:'19 Nov 2024',ar:'19 نوفمبر 2024'},image:'assets/certificates/ibm-data-analysis-project.webp',pdf:'assets/certificates/ibm-data-analysis-project.pdf'},
+ {issuer:'IBM SkillsBuild',name:'Project Management Fundamentals',date:{en:'26 Nov 2024',ar:'26 نوفمبر 2024'},image:'assets/certificates/ibm-project-management.webp',pdf:'assets/certificates/ibm-project-management.pdf'}
 ];
 
 // Landing page UI based on the supplied portfolio design reference.
@@ -84,6 +84,14 @@ Object.assign(DICTIONARY.ar,{
  certIntro:'شهادات في تقنية المعلومات والبيانات وإدارة المشاريع.',contactHeading:'لنتواصل',emailMe:'راسلني',copyEmail:'نسخ البريد',copied:'تم النسخ',
  projectDetails:'عرض التفاصيل',projectLive:'فتح الموقع',projectRepo:'عرض الكود',contactText:'أرحب بالفرص في تحليل البيانات وذكاء الأعمال ونظم المعلومات والدعم الفني.'
 });
+Object.assign(DICTIONARY.en,{
+ viewCertificate:'View Certificate',openPdf:'Open PDF',verifyCertificate:'Verify Credential',closePreview:'Close preview',
+ certificateImage:'Preview certificate',certIntro:'Select a certificate to view it in full, open its original PDF, or verify it where available.'
+});
+Object.assign(DICTIONARY.ar,{
+ viewCertificate:'عرض الشهادة',openPdf:'فتح PDF',verifyCertificate:'التحقق من الشهادة',closePreview:'إغلاق المعاينة',
+ certificateImage:'معاينة الشهادة',certIntro:'اختر أي شهادة لعرضها بحجم كبير أو فتح ملف PDF الأصلي أو التحقق منها عند توفر رابط التحقق.'
+});
 const safe=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let lang='en';
 try{if(localStorage.getItem('portfolio-hr-lang')==='ar')lang='ar'}catch{}
@@ -94,6 +102,7 @@ function render(){
  document.title=lang==='ar'?'عبدالعالي المرزوق | المعرض المهني':'Abdulali Almarzooq | IT & Data Professional';
  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=t[el.dataset.i18n];if(v)el.textContent=v});
  document.querySelector('#langSwitch span').textContent=lang==='ar'?'English':'العربية';
+ const closeCert=document.getElementById('closeCertPreview');if(closeCert)closeCert.setAttribute('aria-label',t.closePreview);
  const projects=[
   {image:'assets/staff-directory-preview.webp',name:t.projectOneName,description:t.projectOneDesc,tags:['HTML','CSS','JavaScript','GitHub Pages'],url:DIRECTORY_URL,repo:'https://github.com/graduate-directory-2024/iau-graduate-studies-directory',icon:'🌐',symbol:'web'},
   {image:'assets/powerbi-preview.webp',name:t.projectTwoName,description:t.projectTwoDesc,tags:['Power BI','Data Analysis','DAX','Reporting'],caseUrl:'case-study.html?project=powerbi',icon:'▥',symbol:'powerbi'},
@@ -107,8 +116,39 @@ function render(){
  const skills=[['skillOne','skillOneDesc'],['skillTwo','skillTwoDesc'],['skillThree','skillThreeDesc']];
  document.getElementById('skillsGrid').innerHTML=skills.map(([title,desc])=>`<article class="skill-card"><h3>${safe(t[title])}</h3><p>${safe(t[desc])}</p></article>`).join('');
  document.getElementById('experienceList').innerHTML=EXPERIENCE.map(x=>{const e=x[lang];return `<article class="experience-item"><span class="experience-date">${safe(e.date)}</span><h3>${safe(e.role)}</h3><div class="experience-company">${safe(e.company)}</div><p>${safe(e.details)}</p></article>`}).join('');
- document.getElementById('certGrid').innerHTML=CERTIFICATES.map(c=>`<article class="cert-item"><span class="cert-logo" aria-hidden="true">${safe(c.logo)}</span><div><h3>${safe(c.name)}</h3><p>${safe(c.issuer)} · ${safe(c.date[lang])}</p></div></article>`).join('');
+ document.getElementById('certGrid').innerHTML=CERTIFICATES.map((c,i)=>`<article class="cert-item">
+   <button class="cert-image-button" type="button" data-certificate="${i}" aria-label="${safe(t.certificateImage)}: ${safe(c.name)}">
+    <img src="${safe(c.image)}" alt="${safe(c.name)} — ${safe(c.issuer)}" loading="lazy" width="1000" height="710">
+    <span class="cert-image-hint">${safe(t.viewCertificate)} ↗</span>
+   </button>
+   <div class="cert-content">
+    <div class="cert-heading-row"><span class="cert-issuer">${safe(c.issuer)}</span>${c.badge?`<img class="cert-badge" src="${safe(c.badge)}" alt="IBM Data Fundamentals badge" loading="lazy" width="38" height="38">`:''}</div>
+    <h3>${safe(c.name)}</h3><p class="cert-date">${safe(c.date[lang])}</p>
+    <div class="cert-actions"><a class="cert-action primary" href="${safe(c.pdf)}" target="_blank" rel="noopener noreferrer">${safe(t.openPdf)}</a>${c.verify?`<a class="cert-action" href="${safe(c.verify)}" target="_blank" rel="noopener noreferrer">${safe(t.verifyCertificate)} ↗</a>`:''}</div>
+   </div>
+  </article>`).join('');
 }
+// Accessible full-size certificate preview. PDFs remain available as direct links.
+const certDialog=document.getElementById('certPreviewDialog');
+const certPreviewImage=document.getElementById('certPreviewImage');
+const certPreviewTitle=document.getElementById('certPreviewTitle');
+const certPreviewPdf=document.getElementById('certPreviewPdf');
+document.getElementById('certGrid').addEventListener('click',event=>{
+ const btn=event.target.closest('[data-certificate]');
+ if(!btn)return;
+ const cert=CERTIFICATES[Number(btn.dataset.certificate)];
+ if(!cert)return;
+ certPreviewImage.src=cert.image;
+ certPreviewImage.alt=cert.name;
+ certPreviewTitle.textContent=cert.name;
+ certPreviewPdf.href=cert.pdf;
+ certPreviewPdf.textContent=DICTIONARY[lang].openPdf+' ↗';
+ if(typeof certDialog.showModal==='function')certDialog.showModal();
+ else window.open(cert.pdf,'_blank','noopener,noreferrer');
+});
+document.getElementById('closeCertPreview').addEventListener('click',()=>certDialog.close());
+certDialog.addEventListener('click',event=>{if(event.target===certDialog)certDialog.close()});
+
 const langSwitch=document.getElementById('langSwitch');langSwitch.addEventListener('click',()=>{lang=lang==='en'?'ar':'en';try{localStorage.setItem('portfolio-hr-lang',lang)}catch{}render()});
 const nav=document.getElementById('navLinks'),menuToggle=document.getElementById('menuToggle');
 menuToggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation':'Open navigation')});

@@ -9,3 +9,34 @@
 @media(max-width:800px){.shell{width:calc(100% - 36px)}.projects-grid,.skills-grid{grid-template-columns:1fr}.project-image-link img{height:auto;aspect-ratio:16/9;object-fit:cover}.project-description{min-height:0}.project-content{padding:16px}.experience-grid{grid-template-columns:1fr}.section{padding:33px 0 46px}.section-heading h2{font-size:23px}.cert-grid{grid-template-columns:repeat(2,1fr)}.contact-inner{flex-direction:column;align-items:flex-start}.footer-inner{flex-wrap:wrap;justify-content:flex-start;padding-block:25px;gap:18px 35px}}
 @media(max-width:540px){.brand-monogram{font-size:27px}.brand-divider{height:33px}.brand-copy strong{font-size:13px}.brand-copy small{font-size:10.5px}.lang-switch{min-width:auto;padding:9px 10px;font-size:12px}.lang-switch svg{width:16px;height:16px}.header-inner{gap:5px}.nav-links.open{grid-template-columns:1fr 1fr;padding-inline:17px}.hero-inner{padding-block:31px 40px;gap:26px}.hero h1{font-size:32px}.hero-role{font-size:20px}.hero-description{font-size:14px}.eyebrow{letter-spacing:2px}.expertise{grid-template-columns:repeat(2,1fr);row-gap:23px}.expertise-item svg{height:38px;width:38px}.section-heading{align-items:flex-start;flex-direction:column;gap:4px}.section-heading h2{font-size:22px}.cert-grid{grid-template-columns:1fr}.footer-contact-link{font-size:12px}.contact-inner h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+/* Real certificate previews: matches the original navy/blue portfolio design */
+.cert-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
+.cert-item{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;overflow:hidden;border:1px solid #dce8f4;border-radius:13px;background:#fff;box-shadow:var(--shadow);min-width:0;transition:transform .18s,box-shadow .18s}
+.cert-item:hover{transform:translateY(-2px);box-shadow:0 12px 27px rgba(18,52,82,.13)}
+.cert-image-button{display:block;position:relative;width:100%;padding:14px;background:#edf4fc;border:0;border-bottom:1px solid #dbe6f4;text-align:center;cursor:zoom-in;min-height:175px}
+.cert-image-button img{display:block;width:100%;height:auto;aspect-ratio:1.42 / 1;object-fit:contain;background:#fff;border-radius:5px;box-shadow:0 2px 10px rgba(30,55,85,.12)}
+.cert-image-button:focus-visible,.cert-action:focus-visible,.cert-preview-close:focus-visible{outline:3px solid #37aaf0;outline-offset:2px}
+.cert-image-hint{position:absolute;inset-inline-end:19px;bottom:19px;background:rgba(10,37,69,.93);border-radius:6px;color:#fff;font-size:11px;font-weight:750;padding:7px 10px;line-height:1.1}
+.cert-content{padding:17px 17px 18px;display:flex;flex-direction:column;flex:1;min-width:0}
+.cert-heading-row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:26px;margin-bottom:8px}
+.cert-issuer{color:#23629c;font-weight:760;font-size:11px;letter-spacing:.2px}
+.cert-badge{width:31px;height:31px;object-fit:cover;border-radius:6px;border:1px solid #f3d3e6}
+.cert-item h3{font-size:15px;line-height:1.45;margin:0;color:#122e50;overflow-wrap:anywhere}
+.cert-item .cert-date{font-size:12px;color:#6a7e92;margin:8px 0 17px}
+.cert-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
+.cert-action{display:inline-flex;align-items:center;justify-content:center;min-height:33px;padding:7px 10px;border:1px solid #b6cce3;border-radius:7px;color:#17508d;font-size:11px;font-weight:730;text-align:center;line-height:1.35;background:#fff}
+.cert-action:hover{border-color:#397ebc;background:#ecf5fd}
+.cert-action.primary{background:#0d3158;border-color:#0d3158;color:#fff}
+.cert-action.primary:hover{background:#164c80}
+.cert-preview-dialog{position:fixed;inset:0;max-width:min(1050px,calc(100vw - 28px));width:100%;max-height:calc(100dvh - 24px);padding:0;border:1px solid #cfdfeb;border-radius:14px;background:#fff;box-shadow:0 24px 90px rgba(0,0,0,.3);color:#102a4a;overflow:auto}
+.cert-preview-dialog::backdrop{background:rgba(5,20,39,.78)}
+.cert-preview-head{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px 20px;background:#0b2748;color:#fff;position:sticky;top:0;z-index:1}
+.cert-preview-head h2{font-size:16px;margin:0}
+.cert-preview-close{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.5);height:34px;width:36px;border-radius:8px;line-height:1;font-size:24px}
+.cert-preview-dialog>img{display:block;width:100%;height:auto;max-height:calc(100dvh - 155px);object-fit:contain;padding:14px;background:#f2f5f9}
+.cert-preview-foot{padding:12px 18px;text-align:end}
+.cert-preview-foot a{font-size:13px;font-weight:740;color:#0c63b6;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:1100px){.cert-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.cert-grid{grid-template-columns:1fr}.cert-image-button{padding:14px}.cert-image-button img{aspect-ratio:1.6/1}.cert-content{padding:16px}.cert-preview-head h2{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.cert-item{transition:none}}
